@@ -1,0 +1,14 @@
+{% extends 'front.html.twig' %}
+
+{% block front %}
+    <div class="row">
+        <div class="col-12">
+            <h3 class="mb-4">{{ media.title }}</h3>
+
+            <div class="row">
+                        <img class="" src="{{ asset(media.path) }}" alt="{{ media.title }}">
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

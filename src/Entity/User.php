@@ -6,30 +6,40 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
-class User
+#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private bool $admin = false;
-
-    #[ORM\Column]
-    private ?string $name;
-
-    #[ORM\Column(type: 'text', nullable: true)]
-    private ?string $description;
-
-    #[ORM\Column(length: 180, unique: true)]
+    #[ORM\Column(length: 180)]
     private ?string $email = null;
 
-    #[ORM\OneToMany(targetEntity: Media::class, mappedBy: 'user')]
+    /**
+     * @var list<string> The user roles
+     */
+    #[ORM\Column(type: 'json')]
+    private array $roles = [];
+
+    /**
+     * @var string The hashed password
+     */
+    #[ORM\Column]
+    private string $password;
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $description;
+    #[ORM\Column(length: 255)]
+    private ?string $username = null;
+    #[ORM\OneToMany(targetEntity: Media::class, mappedBy: "user")]
     private Collection $medias;
+
 
     public function __construct()
     {
@@ -53,43 +63,129 @@ class User
         return $this;
     }
 
-    public function getName(): ?string
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUserIdentifier(): string
     {
-        return $this->name;
+        return (string) $this->email;
     }
 
-    public function setName(?string $name): void
+    /**
+     * @see UserInterface
+     *
+     * @return list<string>
+     */
+    public function getRoles(): array
     {
-        $this->name = $name;
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
     }
 
+    /**
+     * @param list<string> $roles
+     */
+    public function setRoles(array $roles): static
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * @see PasswordAuthenticatedUserInterface
+     */
+    public function getPassword(): ?string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): static
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials(): void
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
+    }
+
+    public function getUsername(): ?string
+    {
+        return $this->username;
+    }
+
+    public function setUsername(string $username): static
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
     public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    public function setDescription(?string $description): void
+    /**
+     * @param string|null $description
+     * @return User
+     */
+    public function setDescription(?string $description): self
     {
         $this->description = $description;
+        return $this;
     }
 
+    /**
+     * @return Collection
+     */
     public function getMedias(): Collection
     {
         return $this->medias;
     }
 
-    public function setMedias(Collection $medias): void
+    /**
+     * @param Collection $medias
+     * @return User
+     */
+    public function setMedias(Collection $medias): self
     {
         $this->medias = $medias;
+        return $this;
     }
 
-    public function isAdmin(): bool
+    public function addMedia(Media $media): self
     {
-        return $this->admin;
+        if (!$this->medias->contains($media)) {
+            $this->medias[] = $media;
+            $media->setUser($this); // Lier l'utilisateur au média
+        }
+
+        return $this;
     }
 
-    public function setAdmin(bool $admin): void
+    public function removeMedia(Media $media): self
     {
-        $this->admin = $admin;
+        // Si la collection a été modifiée, on délie l'utilisateur du média
+        if ($this->medias->removeElement($media) && $media->getUser() === $this) {
+            $media->setUser(null);
+        }
+
+        return $this;
     }
 }
