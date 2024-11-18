@@ -7,6 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Length;
 
 class AlbumType extends AbstractType
 {
@@ -14,6 +15,14 @@ class AlbumType extends AbstractType
     {
         $builder->add('name', TextType::class, [
             'label' => 'Nom',
+            'constraints' => [
+                new Length([
+                    'min' => 3,
+                    'max' => 50,
+                    'minMessage' => 'Le nom doit comporter au moins {{ limit }} caractères.',
+                    'maxMessage' => 'Le nom ne peut pas dépasser {{ limit }} caractères.',
+                ]),
+            ],
         ]);
     }
 

@@ -76,7 +76,7 @@ class GuestController extends AbstractController
 
 
     #[Route('/admin/guest/delete/{id}', name: 'admin_guest_delete')]
-    public function delete(int $id)
+    public function delete(int $id): RedirectResponse
     {
         /** @var User $user */
         $user = $this->entityManager->getRepository(User::class)->find($id);
@@ -85,5 +85,4 @@ class GuestController extends AbstractController
 
         return $this->redirectToRoute('admin_guests_index');
     }
-
 }

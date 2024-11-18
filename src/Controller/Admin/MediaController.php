@@ -36,7 +36,6 @@ class MediaController extends AbstractController
             25,
             25 * ($page - 1)
         );
-        dump($medias);
         $total = $this->entityManager->getRepository(Media::class)->count([]);
 
         return $this->render('admin/media/index.html.twig', [

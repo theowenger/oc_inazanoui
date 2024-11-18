@@ -18,6 +18,7 @@ class AlbumController extends AbstractController
 {
 
     private EntityManagerInterface $entityManager;
+    private AlbumRepository $albumRepository;
 
     public function __construct(EntityManagerInterface $entityManager, AlbumRepository $albumRepository)
     {
@@ -56,7 +57,7 @@ class AlbumController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->entityManager-->flush();
+            $this->entityManager->flush();
 
             return $this->redirectToRoute('admin_album_index');
         }
