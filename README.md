@@ -21,7 +21,15 @@ Faudrait peut être trouver une meilleure solution car le fichier est très gros
 
 - go to the root folder
 - symfony console doctrine:fixtures:load
+- You can choose the group for your test : --group=test OR --group=app
+- Every group charging different fixtures data
 - if your setup your DB, the fixtures will play
+
+## Launch fixtures for test:
+
+- go to the root folder
+- php bin/console doctrine:fixtures:load --group=test --env=test
+
 
 ## Launch tests:
 - go to the root folder
@@ -63,3 +71,6 @@ DETAIL: Key (id)=(130) is still referenced from table "media".
 
 -Un Album n'est pas link sur un user, modifier son entity?
 -Un media peut etre supprimé par n'importe quel role, rajouter condition dans le MediaForm?
+- changer les fixtures de test pour renommer l'admin "ADMIN"
+- Changer les status code 200 en cas d'erreur (par ex : add form) OU ALORS ...
+- plutot crawler la page pour recuperer les erreurs

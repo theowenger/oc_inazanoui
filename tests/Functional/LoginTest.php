@@ -17,7 +17,7 @@ final class LoginTest extends FunctionalTestCase
         $this->get('/login');
 
         $this->client->submitForm('Connexion', [
-            '_username' => 'user0@gmail.com',
+            '_username' => 'userTest0@gmail.com',
             '_password' => 'secret'
         ]);
 
@@ -35,7 +35,7 @@ final class LoginTest extends FunctionalTestCase
         $this->get('/login');
 
         $this->client->submitForm('Connexion', [
-            '_username' => 'user1@gmail.com',
+            '_username' => 'userTest1@gmail.com',
             '_password' => 'secret'
         ]);
 
@@ -54,7 +54,7 @@ final class LoginTest extends FunctionalTestCase
         $this->get('/login');
 
         $this->client->submitForm('Connexion', [
-            '_username' => 'user0@email.com',
+            '_username' => 'userTest0@email.com',
             '_password' => 'fail'
         ]);
 

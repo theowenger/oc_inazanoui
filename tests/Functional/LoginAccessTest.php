@@ -31,15 +31,16 @@ public function testReturnTrueIfClientIsAuthenticatedAsRoleAdmin(): void
         self::assertResponseStatusCodeSame(200);
 
     }
-    public function testReturnTrueIfClientIsAuthenticatedAsRoleUser(): void
+    public function testIfClientIsAuthenticatedAsRoleUser(): void
     {
-        $this->login('user1@gmail.com');
+        $this->login('userTest1@gmail.com');
         $this->get('/admin/album');
         self::assertResponseStatusCodeSame(200);
         $this->get('/admin/media');
         self::assertResponseStatusCodeSame(200);
+        //TODO: Seulement l'admin peut acceder à la page guest
         $this->get('/admin/guests');
-        self::assertResponseStatusCodeSame(200);
+        self::assertResponseStatusCodeSame(302);
 
     }
 }

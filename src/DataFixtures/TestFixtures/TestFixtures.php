@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DataFixtures;
+namespace App\DataFixtures\TestFixtures;
 
 use App\Entity\Album;
 use App\Entity\Media;
@@ -9,13 +9,13 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class AppFixtures extends Fixture implements FixtureGroupInterface
+class TestFixtures extends Fixture implements FixtureGroupInterface
 {
-
     public static function getGroups(): array
     {
-        return ['app'];
+        return ['test'];
     }
+
     public function load(ObjectManager $manager): void
     {
         $users = [];
@@ -33,8 +33,8 @@ class AppFixtures extends Fixture implements FixtureGroupInterface
         for($i = 0; $i <= 5; $i++) {
             $user = new User();
 
-            $user->setUsername('user' . $i);
-            $user->setEmail('user'. $i.'@gmail.com');
+            $user->setUsername('userTest' . $i);
+            $user->setEmail('userTest'. $i.'@gmail.com');
 
             $password = password_hash($password, PASSWORD_DEFAULT);
             $user->setPassword($password);

@@ -1,0 +1,198 @@
+PHPUnit 9.6.21 by Sebastian Bergmann and contributors.
+
+Testing 
+......F...F..F.F....EE..E....                                     29 / 29 (100%)
+
+Time: 00:01.053, Memory: 54.50 MB
+
+There were 3 errors:
+
+1) Functional\MediaControllerTest::testReturnOkIfUserAddNewMediaForHisAccount
+TypeError: Functional\MediaControllerTest::submitMediaForm(): Argument #2 ($album) must be of type App\Entity\Album, null given, called in /home/theo.wenger/PhpstormProjects/OC/876-p15-inazaoui/tests/Functional/MediaControllerTest.php on line 86
+
+/home/theo.wenger/PhpstormProjects/OC/876-p15-inazaoui/tests/Functional/MediaControllerTest.php:155
+/home/theo.wenger/PhpstormProjects/OC/876-p15-inazaoui/tests/Functional/MediaControllerTest.php:86
+/home/theo.wenger/PhpstormProjects/OC/876-p15-inazaoui/vendor/phpunit/phpunit/phpunit:107
+
+2) Functional\MediaControllerTest::testReturnErrorIfUserAddNewMediaForAnotherAccount
+TypeError: Functional\MediaControllerTest::submitMediaForm(): Argument #2 ($album) must be of type App\Entity\Album, null given, called in /home/theo.wenger/PhpstormProjects/OC/876-p15-inazaoui/tests/Functional/MediaControllerTest.php on line 101
+
+/home/theo.wenger/PhpstormProjects/OC/876-p15-inazaoui/tests/Functional/MediaControllerTest.php:155
+/home/theo.wenger/PhpstormProjects/OC/876-p15-inazaoui/tests/Functional/MediaControllerTest.php:101
+/home/theo.wenger/PhpstormProjects/OC/876-p15-inazaoui/vendor/phpunit/phpunit/phpunit:107
+
+3) Functional\MediaControllerTest::testReturnErrorIfUserDeleteMediaForAnotherAccount
+Error: Call to a member function getMedias() on null
+
+/home/theo.wenger/PhpstormProjects/OC/876-p15-inazaoui/tests/Functional/MediaControllerTest.php:136
+/home/theo.wenger/PhpstormProjects/OC/876-p15-inazaoui/vendor/phpunit/phpunit/phpunit:107
+
+--
+
+There were 4 failures:
+
+1) Functional\AlbumControllerTest::testReturnErrorIfUserDeleteAnotherUserAlbum
+Failed asserting that the Response status code is 200.
+HTTP/1.1 302 Found
+Cache-Control: max-age=0, must-revalidate, private
+Content-Type:  text/html; charset=utf-8
+Date:          Fri, 22 Nov 2024 08:38:59 GMT
+Expires:       Fri, 22 Nov 2024 08:38:59 GMT
+Location:      /admin/album
+X-Robots-Tag:  noindex
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="refresh" content="0;url='/admin/album'" />
+
+        <title>Redirecting to /admin/album</title>
+    </head>
+    <body>
+        Redirecting to <a href="/admin/album">/admin/album</a>.
+    </body>
+</html>
+
+/home/theo.wenger/PhpstormProjects/OC/876-p15-inazaoui/vendor/symfony/framework-bundle/Test/BrowserKitAssertionsTrait.php:148
+/home/theo.wenger/PhpstormProjects/OC/876-p15-inazaoui/vendor/symfony/framework-bundle/Test/BrowserKitAssertionsTrait.php:38
+/home/theo.wenger/PhpstormProjects/OC/876-p15-inazaoui/tests/Functional/AlbumControllerTest.php:112
+/home/theo.wenger/PhpstormProjects/OC/876-p15-inazaoui/vendor/phpunit/phpunit/phpunit:107
+
+2) Functional\AlbumControllerTest::testReturnErrorIfUserSetAnotherUserAlbum
+Failed asserting that the Response status code is 200.
+HTTP/1.1 302 Found
+Cache-Control: max-age=0, must-revalidate, private
+Content-Type:  text/html; charset=utf-8
+Date:          Fri, 22 Nov 2024 08:38:59 GMT
+Expires:       Fri, 22 Nov 2024 08:38:59 GMT
+Location:      /admin/album
+X-Robots-Tag:  noindex
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="refresh" content="0;url='/admin/album'" />
+
+        <title>Redirecting to /admin/album</title>
+    </head>
+    <body>
+        Redirecting to <a href="/admin/album">/admin/album</a>.
+    </body>
+</html>
+
+/home/theo.wenger/PhpstormProjects/OC/876-p15-inazaoui/vendor/symfony/framework-bundle/Test/BrowserKitAssertionsTrait.php:148
+/home/theo.wenger/PhpstormProjects/OC/876-p15-inazaoui/vendor/symfony/framework-bundle/Test/BrowserKitAssertionsTrait.php:38
+/home/theo.wenger/PhpstormProjects/OC/876-p15-inazaoui/tests/Functional/AlbumControllerTest.php:191
+/home/theo.wenger/PhpstormProjects/OC/876-p15-inazaoui/vendor/phpunit/phpunit/phpunit:107
+
+3) Functional\LoginAccessTest::testIfClientIsAuthenticatedAsRoleUser
+Failed asserting that the Response status code is 302.
+HTTP/1.1 200 OK
+Cache-Control: max-age=0, must-revalidate, private
+Content-Type:  text/html; charset=UTF-8
+Date:          Fri, 22 Nov 2024 08:38:59 GMT
+Expires:       Fri, 22 Nov 2024 08:38:59 GMT
+X-Robots-Tag:  noindex
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Ina Zaoui</title>
+                    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        
+                    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+            </head>
+    <body>
+            <div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-3 col-lg-2 d-none d-md-block bg-dark sidebar min-vh-100 p-4">
+                <div class="position-sticky">
+                    <h1 class="text-white">Admin</h1>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/media">
+                                Medias
+                            </a>
+                        </li>
+                                            </ul>
+                </div>
+            </nav>
+            <main class="col-md-9 ms-sm-auto col-lg-10 p-4">
+                    <div class="d-flex justify-content-between align-items-center">
+        <h1>GUESTS</h1>
+        <a href="/admin/guest/add" class="btn btn-primary">Ajouter</a>
+    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+                    <tr>
+                <td>userTest0</td>
+                <td>
+                    <a href="/admin/guest/update/128" class="btn btn-warning">Modifier</a>
+                    <a href="/admin/guest/delete/128" class="btn btn-danger">Supprimer</a>
+                </td>
+            </tr>
+                    <tr>
+                <td>userTest1</td>
+                <td>
+                    <a href="/admin/guest/update/129" class="btn btn-warning">Modifier</a>
+                    <a href="/admin/guest/delete/129" class="btn btn-danger">Supprimer</a>
+                </td>
+            </tr>
+                    <tr>
+                <td>userTest2</td>
+                <td>
+                    <a href="/admin/guest/update/130" class="btn btn-warning">Modifier</a>
+                    <a href="/admin/guest/delete/130" class="btn btn-danger">Supprimer</a>
+                </td>
+            </tr>
+                    <tr>
+                <td>userTest3</td>
+                <td>
+                    <a href="/admin/guest/update/131" class="btn btn-warning">Modifier</a>
+                    <a href="/admin/guest/delete/131" class="btn btn-danger">Supprimer</a>
+                </td>
+            </tr>
+                    <tr>
+                <td>userTest4</td>
+                <td>
+                    <a href="/admin/guest/update/132" class="btn btn-warning">Modifier</a>
+                    <a href="/admin/guest/delete/132" class="btn btn-danger">Supprimer</a>
+                </td>
+            </tr>
+                    <tr>
+                <td>userTest5</td>
+                <td>
+                    <a href="/admin/guest/update/133" class="btn btn-warning">Modifier</a>
+                    <a href="/admin/guest/delete/133" class="btn btn-danger">Supprimer</a>
+                </td>
+            </tr>
+                </tbody>
+    </table>
+            </main>
+        </div>
+    </div>
+    </body>
+</html>
+
+/home/theo.wenger/PhpstormProjects/OC/876-p15-inazaoui/vendor/symfony/framework-bundle/Test/BrowserKitAssertionsTrait.php:148
+/home/theo.wenger/PhpstormProjects/OC/876-p15-inazaoui/vendor/symfony/framework-bundle/Test/BrowserKitAssertionsTrait.php:38
+/home/theo.wenger/PhpstormProjects/OC/876-p15-inazaoui/tests/Functional/LoginAccessTest.php:43
+/home/theo.wenger/PhpstormProjects/OC/876-p15-inazaoui/vendor/phpunit/phpunit/phpunit:107
+
+4) Functional\LoginTest::testThatLoginShouldSucceededIfUserIsRoleUser
+Failed asserting that false is true.
+
+/home/theo.wenger/PhpstormProjects/OC/876-p15-inazaoui/tests/Functional/LoginTest.php:45
+/home/theo.wenger/PhpstormProjects/OC/876-p15-inazaoui/vendor/phpunit/phpunit/phpunit:107
+
+ERRORS!
+Tests: 29, Assertions: 35, Errors: 3, Failures: 4.

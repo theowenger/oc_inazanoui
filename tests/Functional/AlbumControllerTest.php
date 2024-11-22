@@ -31,7 +31,7 @@ final class AlbumControllerTest extends FunctionalTestCase
 
     public function testReturnOkIfUserAddNewAlbum():void
     {
-        $this->login('user1@gmail.com');
+        $this->login('userTest1@gmail.com');
 
         $this->get('/admin/album/add');
 
@@ -63,7 +63,6 @@ final class AlbumControllerTest extends FunctionalTestCase
             'album[name]' => "zazeazeazeazeazeazeazeazeazeazeazeazeazeazeazeazeazeazeazeazeazeaze",
         ]);
         self::assertResponseStatusCodeSame(200);
-
     }
 
     //----------------- DELETE ALBUM -----------------
@@ -84,9 +83,9 @@ final class AlbumControllerTest extends FunctionalTestCase
 
     public function testReturnOkIfUserDeleteHisOwnAlbum():void
     {
-        $this->login('user1@gmail.com');
+        $this->login('userTest1@gmail.com');
 
-        $user = self::getContainer()->get(UserRepository::class)->findOneByEmail('user1@gmail.com');
+        $user = self::getContainer()->get(UserRepository::class)->findOneByEmail('userTest1@gmail.com');
 
         $medias = $user->getMedias();
         $media = $medias[0];
@@ -100,9 +99,9 @@ final class AlbumControllerTest extends FunctionalTestCase
     public function testReturnErrorIfUserDeleteAnotherUserAlbum():void
     {
         //TODO: Actuellement un user peut delete un album ne lui appartenant pas
-        $this->login('user1@gmail.com');
+        $this->login('userTest1@gmail.com');
 
-        $user = self::getContainer()->get(UserRepository::class)->findOneByEmail('user2@gmail.com');
+        $user = self::getContainer()->get(UserRepository::class)->findOneByEmail('userTest2@gmail.com');
 
         $medias = $user->getMedias();
         $media = $medias[0];
@@ -157,9 +156,9 @@ final class AlbumControllerTest extends FunctionalTestCase
 
     public function testReturnOkIfUserSetHisOwnAlbum():void
     {
-        $this->login('user1@gmail.com');
+        $this->login('userTest1@gmail.com');
 
-        $user = self::getContainer()->get(UserRepository::class)->findOneByEmail('user1@gmail.com');
+        $user = self::getContainer()->get(UserRepository::class)->findOneByEmail('userTest1@gmail.com');
 
         $medias = $user->getMedias();
         $media = $medias[0];
@@ -176,9 +175,9 @@ final class AlbumControllerTest extends FunctionalTestCase
     public function testReturnErrorIfUserSetAnotherUserAlbum():void
     {
         //TODO: Actuellement un user peut set un album qui n'est pas le sien
-        $this->login('user1@gmail.com');
+        $this->login('userTest1@gmail.com');
 
-        $user = self::getContainer()->get(UserRepository::class)->findOneByEmail('user2@gmail.com');
+        $user = self::getContainer()->get(UserRepository::class)->findOneByEmail('userTest2@gmail.com');
 
         $medias = $user->getMedias();
         $media = $medias[0];

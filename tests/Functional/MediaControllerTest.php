@@ -24,7 +24,7 @@ final class MediaControllerTest extends FunctionalTestCase
         $this->login();
         $this->get('/admin/media/add');
 
-        $user = self::getContainer()->get(UserRepository::class)->findOneBy(['email' => 'user1@gmail.com']);
+        $user = self::getContainer()->get(UserRepository::class)->findOneBy(['email' => 'userTest1@gmail.com']);
 
         $albums = self::getContainer()->get(AlbumRepository::class)->findAll();
 
@@ -42,7 +42,7 @@ final class MediaControllerTest extends FunctionalTestCase
         $this->login();
         $this->get('/admin/media/add');
 
-        $user = self::getContainer()->get(UserRepository::class)->findOneBy(['email' => 'user1@gmail.com']);
+        $user = self::getContainer()->get(UserRepository::class)->findOneBy(['email' => 'userTest1@gmail.com']);
 
         $albums = self::getContainer()->get(AlbumRepository::class)->findAll();
 
@@ -60,7 +60,7 @@ final class MediaControllerTest extends FunctionalTestCase
         $this->login();
         $this->get('/admin/media/add');
 
-        $user = self::getContainer()->get(UserRepository::class)->findOneBy(['email' => 'user1@gmail.com']);
+        $user = self::getContainer()->get(UserRepository::class)->findOneBy(['email' => 'userTest1@gmail.com']);
 
         $albums = self::getContainer()->get(AlbumRepository::class)->findAll();
 
@@ -75,11 +75,11 @@ final class MediaControllerTest extends FunctionalTestCase
 
     public function testReturnOkIfUserAddNewMediaForHisAccount(): void
     {
-        $this->login('user1@gmail.com');
+        $this->login('userTest0@gmail.com');
         $this->get('/admin/media/add');
 
-        $user = self::getContainer()->get(UserRepository::class)->findOneBy(['email' => 'user1@gmail.com']);
-        $album = self::getContainer()->get(AlbumRepository::class)->findOneBy(['name' => 'Album de user1 #2']);
+        $user = self::getContainer()->get(UserRepository::class)->findOneBy(['email' => 'userTest3@gmail.com']);
+        $album = self::getContainer()->get(AlbumRepository::class)->findOneBy(['name' => 'Album de userTest3 #1']);
 
         $uploadedFile = $this->addNewUploadedFile('/../../public/images/ina.png');
 
@@ -90,11 +90,11 @@ final class MediaControllerTest extends FunctionalTestCase
     public function testReturnErrorIfUserAddNewMediaForAnotherAccount(): void
     {
         //TODO: Gerer le fait qu'un user ne puisse pas ajouter de medias sur un autre album que le sien
-        $this->login('user1@gmail.com');
+        $this->login('userTest0@gmail.com');
         $this->get('/admin/media/add');
 
-        $user = self::getContainer()->get(UserRepository::class)->findOneBy(['email' => 'user1@gmail.com']);
-        $album = self::getContainer()->get(AlbumRepository::class)->findOneBy(['name' => 'Album de user0 #2']);
+        $user = self::getContainer()->get(UserRepository::class)->findOneBy(['email' => 'userTest5@gmail.com']);
+        $album = self::getContainer()->get(AlbumRepository::class)->findOneBy(['name' => 'Album de userTest5 #2']);
 
         $uploadedFile = $this->addNewUploadedFile('/../../public/images/ina.png');
 
@@ -116,9 +116,9 @@ final class MediaControllerTest extends FunctionalTestCase
 
     public function testReturnOKIfUserDeleteMediaForHisAccount(): void
     {
-        $this->login('user1@gmail.com');
+        $this->login('userTest1@gmail.com');
         /** @var User $user */
-        $user = self::getContainer()->get(UserRepository::class)->findOneBy(['email' => 'user1@gmail.com']);
+        $user = self::getContainer()->get(UserRepository::class)->findOneBy(['email' => 'userTest1@gmail.com']);
         $medias = $user->getMedias();
         $media = $medias[0];
 
@@ -130,10 +130,11 @@ final class MediaControllerTest extends FunctionalTestCase
     public function testReturnErrorIfUserDeleteMediaForAnotherAccount(): void
     {
         //TODO: A priori un User peut delete un media qui ne lui appartient pas
-        $this->login('user1@gmail.com');
+        $this->login('userTest1@gmail.com');
         /** @var User $user */
-        $user = self::getContainer()->get(UserRepository::class)->findOneBy(['email' => 'user2@gmail.com']);
+        $user = self::getContainer()->get(UserRepository::class)->findOneBy(['email' => 'userTest4@gmail.com']);
         $medias = $user->getMedias();
+        dump($medias);
         $media = $medias[0];
 
         $this->get("/admin/media/delete/{$media->getId()}");

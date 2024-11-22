@@ -16,6 +16,7 @@
         "symfony/asset": "^7.1",
         "symfony/console": "^7.1",
         "symfony/css-selector": "^7.1",
+        "doctrine/data-fixtures": "@dev",
         "symfony/doctrine-messenger": "^7.1",
         "symfony/dotenv": "^7.1",
         "symfony/expression-language": "^7.1",
