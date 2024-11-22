@@ -129,7 +129,7 @@ final class MediaControllerTest extends FunctionalTestCase
 
     public function testReturnErrorIfUserDeleteMediaForAnotherAccount(): void
     {
-        //TODO: A priori un User peut delete un media qui ne lui appartient pas
+        //TODO: A priori un User peut delete un media qui ne lui appartient pas.
         $this->login('userTest1@gmail.com');
         /** @var User $user */
         $user = self::getContainer()->get(UserRepository::class)->findOneBy(['email' => 'userTest4@gmail.com']);
