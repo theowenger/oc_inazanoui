@@ -17,7 +17,7 @@ final class LoginTest extends FunctionalTestCase
         $this->get('/login');
 
         $this->client->submitForm('Connexion', [
-            '_username' => 'userTest0@gmail.com',
+            '_username' => 'adminTest@gmail.com',
             '_password' => 'secret'
         ]);
 
@@ -54,8 +54,23 @@ final class LoginTest extends FunctionalTestCase
         $this->get('/login');
 
         $this->client->submitForm('Connexion', [
-            '_username' => 'userTest0@email.com',
+            '_username' => 'adminTest@email.com',
             '_password' => 'fail'
+        ]);
+
+        /** @var AuthorizationCheckerInterface $authorizationChecker */
+        $authorizationChecker = $this->service(AuthorizationCheckerInterface::class);
+
+        self::assertFalse($authorizationChecker->isGranted('IS_AUTHENTICATED'));
+    }
+
+    public function testThatLoginShouldFailIfUserIsBan(): void
+    {
+        $this->get('/login');
+
+        $this->client->submitForm('Connexion', [
+            '_username' => 'banUserTest@email.com',
+            '_password' => 'secret'
         ]);
 
         /** @var AuthorizationCheckerInterface $authorizationChecker */

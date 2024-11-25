@@ -39,6 +39,14 @@
                                 <a class="nav-link" href="{{ path('admin_logout') }}">Déconnexion</a>
                             </li>
                         {% endif %}
+                        {% if is_granted('IS_AUTHENTICATED_FULLY') and is_granted('ROLE_USER') %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('admin_album_index') }}">Mon espace</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('admin_logout') }}">Déconnexion</a>
+                            </li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>

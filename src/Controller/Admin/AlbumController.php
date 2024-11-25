@@ -3,12 +3,12 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Album;
-use App\Entity\Media;
+use App\Entity\User;
 use App\Form\AlbumType;
-use App\Form\MediaType;
 use App\Repository\AlbumRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,12 +28,19 @@ class AlbumController extends AbstractController
     #[Route('/admin/album', name: 'admin_album_index')]
     public function index(): Response
     {
-        $albums = $this->albumRepository->findAll();
+        if($this->isGranted('ROLE_ADMIN')) {
+            $albums = $this->albumRepository->findAll();
+        }
+        else {
+            /** @var User $user */
+            $user = $this->getUser();
+            $albums = $user->getAlbums();
+        }
 
         return $this->render('admin/album/index.html.twig', ['albums' => $albums]);
     }
     #[Route('/admin/album/add', name: 'admin_album_add')]
-    public function add(Request $request)
+    public function add(Request $request): RedirectResponse|Response
     {
         $album = new Album();
         $form = $this->createForm(AlbumType::class, $album);
@@ -52,9 +59,15 @@ class AlbumController extends AbstractController
     #[Route('/admin/album/update/{id}', name: 'admin_album_update')]
     public function update(Request $request, int $id)
     {
+        $user = $this->getUser();
         $album = $this->albumRepository->find($id);
         $form = $this->createForm(AlbumType::class, $album);
         $form->handleRequest($request);
+
+        if (!$this->isGranted('ROLE_ADMIN') && $album->getUser() !== $user) {
+            throw new AccessDeniedException('Access denied.');
+        }
+
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->entityManager->flush();
@@ -68,8 +81,14 @@ class AlbumController extends AbstractController
     #[Route('/admin/album/delete/{id}', name: 'admin_album_delete')]
     public function delete(int $id): RedirectResponse
     {
-        $media = $this->albumRepository->find($id);
-        $this->entityManager->remove($media);
+        $user = $this->getUser();
+        $album = $this->albumRepository->find($id);
+
+        if (!$this->isGranted('ROLE_ADMIN') && $album->getUser() !== $user) {
+            throw new AccessDeniedException('Access denied.');
+        }
+
+        $this->entityManager->remove($album);
         $this->entityManager->flush();
 
         return $this->redirectToRoute('admin_album_index');

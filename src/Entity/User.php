@@ -37,13 +37,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $description;
     #[ORM\Column(length: 255)]
     private ?string $username = null;
+    #[ORM\Column(type: 'boolean')]
+    private bool $isEnabled = true;
     #[ORM\OneToMany(targetEntity: Media::class, mappedBy: "user")]
     private Collection $medias;
+    #[ORM\OneToMany(targetEntity: Album::class, mappedBy: "user")]
+    private Collection $albums;
 
 
     public function __construct()
     {
         $this->medias = new ArrayCollection();
+        $this->albums = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -186,6 +191,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             $media->setUser(null);
         }
 
+        return $this;
+    }
+
+    public function getAlbums(): Collection {
+        return $this->albums;
+    }
+
+    public function addAlbum(Album $album): self {
+        if (!$this->albums->contains($album)) {
+            $this->albums->add($album);
+            $album->setUser($this);
+        }
+        return $this;
+    }
+
+    public function removeAlbum(Album $album): self {
+        if ($this->albums->removeElement($album) && $album->getUser() === $this) {
+            $album->setUser(null);
+        }
+        return $this;
+    }
+
+    public function isEnabled(): bool
+    {
+        return $this->isEnabled;
+    }
+
+    public function setIsEnabled(bool $isEnabled): self
+    {
+        $this->isEnabled = $isEnabled;
         return $this;
     }
 }

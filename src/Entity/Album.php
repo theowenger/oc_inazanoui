@@ -21,6 +21,9 @@ class Album
     #[ORM\OneToMany(targetEntity: Media::class, mappedBy: 'album',cascade: ['persist', 'remove'],orphanRemoval: true)]
     private Collection $medias;
 
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: "albums")]
+    private ?User $user;
+
     public function __construct()
     {
         $this->medias = new ArrayCollection();
@@ -66,6 +69,15 @@ class Album
             $media->setAlbum(null);
         }
 
+        return $this;
+    }
+
+    public function getUser(): ?User {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self {
+        $this->user = $user;
         return $this;
     }
 }

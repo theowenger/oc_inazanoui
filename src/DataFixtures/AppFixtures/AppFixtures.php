@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DataFixtures;
+namespace App\DataFixtures\AppFixtures;
 
 use App\Entity\Album;
 use App\Entity\Media;
@@ -8,6 +8,7 @@ use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\Filesystem\Filesystem;
 
 class AppFixtures extends Fixture implements FixtureGroupInterface
 {
@@ -16,6 +17,7 @@ class AppFixtures extends Fixture implements FixtureGroupInterface
     {
         return ['app'];
     }
+
     public function load(ObjectManager $manager): void
     {
         $users = [];
@@ -28,18 +30,21 @@ class AppFixtures extends Fixture implements FixtureGroupInterface
 
     private function loadUser(ObjectManager $manager, array &$users): void
     {
-        $password = 'secret';
+        $plainPassword = 'secret';
 
-        for($i = 0; $i <= 5; $i++) {
+        for ($i = 0; $i <= 5; $i++) {
             $user = new User();
 
             $user->setUsername('user' . $i);
-            $user->setEmail('user'. $i.'@gmail.com');
+            $user->setEmail('user' . $i . '@gmail.com');
 
-            $password = password_hash($password, PASSWORD_DEFAULT);
+            $password = password_hash($plainPassword, PASSWORD_DEFAULT);
             $user->setPassword($password);
+
             $user->setRoles(['ROLE_USER']);
-            if($i === 0) {
+            if ($i === 0) {
+                $user->setUsername('admin');
+                $user->setEmail('admin@gmail.com');
                 $user->setRoles(['ROLE_ADMIN']);
             }
             $users[] = $user;
@@ -51,12 +56,22 @@ class AppFixtures extends Fixture implements FixtureGroupInterface
     {
         $album = new Album();
         $album->setName("Album de " . $user->getUsername() . " #" . $albumIndex);
+        $album->setUser($user);
         $manager->persist($album);
         return $album;
     }
 
     private function loadMediaAndAlbums(ObjectManager $manager, array $users): void
     {
+        $filesystem = new Filesystem();
+
+        $sourcePath = dirname(__DIR__, 3) . "/public/images/ina.png";
+        $uploadPath = dirname(__DIR__, 3) . "/public/uploads/";
+
+        if (!$filesystem->exists($sourcePath)) {
+            throw new \RuntimeException("File source doesnt exist : $sourcePath");
+        }
+
         foreach ($users as $user) {
             for ($albumIndex = 1; $albumIndex <= 3; $albumIndex++) {
                 $album = $this->loadAlbum($manager, $user, $albumIndex);
@@ -66,11 +81,16 @@ class AppFixtures extends Fixture implements FixtureGroupInterface
                     $media->setUser($user);
                     $media->setAlbum($album);
                     $media->setTitle("Media " . $mediaIndex . " de l'album " . $albumIndex . " de " . $user->getUsername());
-                    $media->setPath('uploads/58caf3738ee0951dab898974b2ae50e0.png');
+
+                    $fileName = md5(uniqid('', true)) . '.png';
+                    $destinationPath = $uploadPath . $fileName;
+                    $filesystem->copy($sourcePath, $destinationPath);
+                    $media->setPath('uploads/' . $fileName);
 
                     $manager->persist($media);
                 }
             }
         }
+        $manager->flush();
     }
 }

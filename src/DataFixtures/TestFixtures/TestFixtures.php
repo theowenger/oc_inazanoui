@@ -28,7 +28,7 @@ class TestFixtures extends Fixture implements FixtureGroupInterface
 
     private function loadUser(ObjectManager $manager, array &$users): void
     {
-        $password = 'secret';
+        $plainPassword = 'secret';
 
         for($i = 0; $i <= 5; $i++) {
             $user = new User();
@@ -36,12 +36,22 @@ class TestFixtures extends Fixture implements FixtureGroupInterface
             $user->setUsername('userTest' . $i);
             $user->setEmail('userTest'. $i.'@gmail.com');
 
-            $password = password_hash($password, PASSWORD_DEFAULT);
-            $user->setPassword($password);
+            $hashedPassword = password_hash($plainPassword, PASSWORD_DEFAULT);
+            $user->setPassword($hashedPassword);
+
             $user->setRoles(['ROLE_USER']);
             if($i === 0) {
+                $user->setUsername('adminTest');
+                $user->setEmail('adminTest@gmail.com');
                 $user->setRoles(['ROLE_ADMIN']);
             }
+
+            if($i === 5) {
+                $user->setUsername('banUserTest');
+                $user->setEmail('banUserTest@gmail.com');
+                $user->setIsEnabled(false);
+            }
+
             $users[] = $user;
             $manager->persist($user);
         }
@@ -51,6 +61,7 @@ class TestFixtures extends Fixture implements FixtureGroupInterface
     {
         $album = new Album();
         $album->setName("Album de " . $user->getUsername() . " #" . $albumIndex);
+        $album->setUser($user);
         $manager->persist($album);
         return $album;
     }

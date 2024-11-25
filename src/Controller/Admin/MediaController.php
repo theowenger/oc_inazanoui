@@ -2,7 +2,9 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Album;
 use App\Entity\Media;
+use App\Entity\User;
 use App\Form\MediaType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,7 +28,7 @@ class MediaController extends AbstractController
 
         $criteria = [];
 
-        if (!$this->isGranted('ROLE_ADMIN')) {
+        if ($this->isGranted('ROLE_USER') && !$this->isGranted('ROLE_ADMIN')) {
             $criteria['user'] = $this->getUser();
         }
 
@@ -36,7 +38,13 @@ class MediaController extends AbstractController
             25,
             25 * ($page - 1)
         );
-        $total = $this->entityManager->getRepository(Media::class)->count([]);
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            $total = $this->entityManager->getRepository(Media::class)->count(['user' => $this->getUser()]);
+        }
+        else {
+            $total = $this->entityManager->getRepository(Media::class)->count([]);
+        }
+
 
         return $this->render('admin/media/index.html.twig', [
             'medias' => $medias,
@@ -48,14 +56,31 @@ class MediaController extends AbstractController
     #[Route('/admin/media/add', name: 'admin_media_add')]
     public function add(Request $request): RedirectResponse|Response
     {
+        $user = $this->getUser();
+        $isAdmin = $this->isGranted('ROLE_ADMIN');
+
+        if ($isAdmin) {
+            $albums = $this->entityManager->getRepository(Album::class)->findAll();
+            $users = $this->entityManager->getRepository(User::class)->findAll();
+        } else {
+            $albums = $this->entityManager->getRepository(Album::class)->findBy(['user' => $this->getUser()]);
+            $users = [$this->getUser()];
+        }
+
         $media = new Media();
-        $form = $this->createForm(MediaType::class, $media, ['is_admin' => $this->isGranted('ROLE_ADMIN')]);
+        $form = $this->createForm(MediaType::class, $media, [
+            'albums' => $albums,
+            'users' => $users,
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if (!$this->isGranted('ROLE_ADMIN')) {
-                $media->setUser($this->getUser());
+
+            $selectedAlbum = $media->getAlbum();
+            if (!$isAdmin && $selectedAlbum->getUser() !== $user) {
+                throw $this->createAccessDeniedException('You cannot add media to an album that does not belong to you.');
             }
+
             $media->setPath('uploads/' . md5(uniqid('', true)) . '.' . $media->getFile()->guessExtension());
             $media->getFile()->move('uploads/', $media->getPath());
             $this->entityManager->persist($media);
@@ -71,6 +96,10 @@ class MediaController extends AbstractController
     public function delete(int $id)
     {
         $media = $this->entityManager->getRepository(Media::class)->find($id);
+
+        if(!$this->isGranted("ROLE_ADMIN")  && $media->getUser() !== $this->getUser()) {
+            throw $this->createAccessDeniedException('You cannot delete media to an album that does not belong to you.');
+        }
         $this->entityManager->remove($media);
         $this->entityManager->flush();
         $filePath = $this->getParameter('kernel.project_dir') . '/public/' . $media->getPath();

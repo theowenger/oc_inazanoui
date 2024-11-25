@@ -40,7 +40,7 @@ public function testReturnTrueIfClientIsAuthenticatedAsRoleAdmin(): void
         self::assertResponseStatusCodeSame(200);
         //TODO: Seulement l'admin peut acceder à la page guest
         $this->get('/admin/guests');
-        self::assertResponseStatusCodeSame(302);
+        self::assertResponseStatusCodeSame(403);
 
     }
 }

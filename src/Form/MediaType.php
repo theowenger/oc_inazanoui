@@ -30,32 +30,31 @@ class MediaType extends AbstractType
             ])
             ->add('title', TextType::class, [
                 'label' => 'Titre',
-            ])
-        ;
+            ]);
 
-        if ($options['is_admin']) {
-            $builder
-                ->add('user', EntityType::class, [
-                    'label' => 'Utilisateur',
-                    'required' => false,
-                    'class' => User::class,
-                    'choice_label' => 'username',
-                ])
-                ->add('album', EntityType::class, [
-                    'label' => 'Album',
-                    'required' => false,
-                    'class' => Album::class,
-                    'choice_label' => 'name',
-                ])
-            ;
-        }
+        $builder
+            ->add('user', EntityType::class, [
+                'label' => 'Utilisateur',
+                'required' => false,
+                'class' => User::class,
+                'choices' => $options['users'],
+                'choice_label' => 'username',
+            ])
+            ->add('album', EntityType::class, [
+                'label' => 'Album',
+                'required' => false,
+                'class' => Album::class,
+                'choices' => $options['albums'],
+                'choice_label' => 'name',
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Media::class,
-            'is_admin' => false,
+            'albums' => [],
+            'users' => [],
         ]);
     }
 }

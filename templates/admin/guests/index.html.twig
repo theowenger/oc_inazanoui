@@ -17,7 +17,12 @@
             <tr>
                 <td>{{ user.username }}</td>
                 <td>
-                    <a href="{{ path('admin_guest_update', {id: user.id}) }}" class="btn btn-warning">Modifier</a>
+                    <a href="{{ path('admin_guest_update', {id: user.id}) }}" class="btn btn-info">Modifier</a>
+                    {% if user.isEnabled == true %}
+                        <a href="{{ path('admin_guest_block', {id: user.id}) }}" class="btn btn-warning">Bloquer</a>
+                    {% else %}
+                        <a href="{{ path('admin_guest_unblock', {id: user.id}) }}" class="btn btn-success">Debloquer</a>
+                    {% endif %}
                     <a href="{{ path('admin_guest_delete', {id: user.id}) }}" class="btn btn-danger">Supprimer</a>
                 </td>
             </tr>

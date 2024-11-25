@@ -87,9 +87,9 @@ final class AlbumControllerTest extends FunctionalTestCase
 
         $user = self::getContainer()->get(UserRepository::class)->findOneByEmail('userTest1@gmail.com');
 
-        $medias = $user->getMedias();
-        $media = $medias[0];
-        $album = $media->getAlbum();
+        $albums = $user->getAlbums();
+
+        $album = $albums[0];
 
         $this->get("/admin/album/delete/{$album->getId()}");
 
@@ -103,13 +103,13 @@ final class AlbumControllerTest extends FunctionalTestCase
 
         $user = self::getContainer()->get(UserRepository::class)->findOneByEmail('userTest2@gmail.com');
 
-        $medias = $user->getMedias();
-        $media = $medias[0];
-        $album = $media->getAlbum();
+        $albums = $user->getAlbums();
+
+        $album = $albums[0];
 
         $this->get("/admin/album/delete/{$album->getId()}");
 
-        self::assertResponseStatusCodeSame(200);
+        self::assertResponseStatusCodeSame(403);
     }
 
     //----------------- SET ALBUM -----------------
@@ -160,9 +160,9 @@ final class AlbumControllerTest extends FunctionalTestCase
 
         $user = self::getContainer()->get(UserRepository::class)->findOneByEmail('userTest1@gmail.com');
 
-        $medias = $user->getMedias();
-        $media = $medias[0];
-        $album = $media->getAlbum();
+        $albums = $user->getAlbums();
+
+        $album = $albums[0];
 
         $this->get("/admin/album/update/{$album->getId()}");
 
@@ -179,15 +179,12 @@ final class AlbumControllerTest extends FunctionalTestCase
 
         $user = self::getContainer()->get(UserRepository::class)->findOneByEmail('userTest2@gmail.com');
 
-        $medias = $user->getMedias();
-        $media = $medias[0];
-        $album = $media->getAlbum();
+        $albums = $user->getAlbums();
+
+        $album = $albums[0];
 
         $this->get("/admin/album/update/{$album->getId()}");
 
-        $this->client->submitForm('Modifier', [
-            'album[name]' => 'album test',
-        ]);
-        self::assertResponseStatusCodeSame(200);
+        self::assertResponseStatusCodeSame(403);
     }
 }
