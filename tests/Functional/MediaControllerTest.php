@@ -9,7 +9,9 @@ use App\Entity\User;
 use App\Repository\AlbumRepository;
 use App\Repository\MediaRepository;
 use App\Repository\UserRepository;
+use InvalidArgumentException;
 use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\Finder\Exception\AccessDeniedException;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -53,6 +55,8 @@ final class MediaControllerTest extends FunctionalTestCase
         $this->submitMediaForm($user, $album, $uploadedFile);
 
         self::assertResponseStatusCodeSame(200);
+
+        self::assertSelectorExists('.invalid-feedback');
     }
 
     public function testReturnErrorIfUploadedFileIsInvalid(): void
@@ -87,22 +91,21 @@ final class MediaControllerTest extends FunctionalTestCase
         self::assertResponseStatusCodeSame(302);
     }
 
-//    public function testReturnErrorIfUserAddNewMediaForAnotherAccount(): void
-//    {
-//        //TODO: Gerer le fait qu'un user ne puisse pas ajouter de medias sur un autre album que le sien
-//        $this->login('userTest3@gmail.com');
-//        $this->get('/admin/media/add');
-//
-//        $loggedUser = self::getContainer()->get(UserRepository::class)->findOneBy(['email' => 'userTest3@gmail.com']);
-//
-//        $user = self::getContainer()->get(UserRepository::class)->findOneBy(['email' => 'userTest2@gmail.com']);
-//        $album = self::getContainer()->get(AlbumRepository::class)->findOneBy(['user' => $user->getId()]);
-//
-//        $uploadedFile = $this->addNewUploadedFile('/../../public/images/ina.png');
-//
-//        $this->submitMediaForm($loggedUser, $album, $uploadedFile);
-//        self::assertResponseStatusCodeSame(403);
-//    }
+    public function testReturnErrorIfUserAddNewMediaForAnotherAccount(): void
+    {
+        $this->login('userTest3@gmail.com');
+        $this->get('/admin/media/add');
+
+        $loggedUser = self::getContainer()->get(UserRepository::class)->findOneBy(['email' => 'userTest3@gmail.com']);
+        $user = self::getContainer()->get(UserRepository::class)->findOneBy(['email' => 'userTest2@gmail.com']);
+        $album = self::getContainer()->get(AlbumRepository::class)->findOneBy(['user' => $user->getId()]);
+
+        $uploadedFile = $this->addNewUploadedFile('/../../public/images/ina.png');
+
+        $this->expectException(InvalidArgumentException::class);
+
+        $this->submitMediaForm($loggedUser, $album, $uploadedFile);
+    }
 
 //    //----------------- DELETE MEDIA -----------------
     public function testReturnOkIfAdminDeleteMedia(): void

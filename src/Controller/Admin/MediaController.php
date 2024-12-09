@@ -21,6 +21,7 @@ class MediaController extends AbstractController
     {
         $this->entityManager = $entityManager;
     }
+
     #[Route('/admin/media', name: 'admin_media_index')]
     public function index(Request $request): Response
     {
@@ -52,7 +53,6 @@ class MediaController extends AbstractController
             'page' => $page
         ]);
     }
-
     #[Route('/admin/media/add', name: 'admin_media_add')]
     public function add(Request $request): RedirectResponse|Response
     {

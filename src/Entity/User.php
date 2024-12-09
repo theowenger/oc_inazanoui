@@ -39,9 +39,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $username = null;
     #[ORM\Column(type: 'boolean')]
     private bool $isEnabled = true;
-    #[ORM\OneToMany(targetEntity: Media::class, mappedBy: "user")]
+    #[ORM\OneToMany(targetEntity: Media::class, mappedBy: "user", cascade: ['remove'], orphanRemoval: true)]
     private Collection $medias;
-    #[ORM\OneToMany(targetEntity: Album::class, mappedBy: "user")]
+    #[ORM\OneToMany(targetEntity: Album::class, mappedBy: "user", cascade: ['remove'], orphanRemoval: true)]
     private Collection $albums;
 
 

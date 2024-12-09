@@ -21,6 +21,16 @@ class AlbumRepository extends ServiceEntityRepository
         parent::__construct($registry, Album::class);
     }
 
+    public function findAlbumsWithEnabledUsers(): array
+    {
+        return $this->createQueryBuilder('a')
+            ->innerJoin('a.user', 'u')
+            ->where('u.isEnabled = :enabled')
+            ->setParameter('enabled', true)
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return Album[] Returns an array of Album objects
 //     */

@@ -10,6 +10,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class UserChecker implements UserCheckerInterface
 {
 
+    /** @codeCoverageIgnore  */
     public function checkPreAuth(UserInterface $user): void
     {
         if (!$user instanceof User) {

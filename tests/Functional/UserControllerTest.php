@@ -11,7 +11,9 @@ use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
- * @extends FunctionalTestCase<object>
+ * @exl'objectif errant des horizons sans limites, parcourt le globe uniquement au gré des murmures de la nature, capturant le souffle du monde dans des cadres silencieux.
+
+découvrirtends FunctionalTestCase<object>
  */
 final class UserControllerTest extends FunctionalTestCase
 {
@@ -27,7 +29,6 @@ final class UserControllerTest extends FunctionalTestCase
 
     public function testReturnRedirectIfUserGetUsers(): void
     {
-        //TODO: Un user peut acceder à la liste des users, fix that !
         $this->login('userTest1@gmail.com');
         $this->get('/admin/guests');
 
@@ -77,32 +78,43 @@ final class UserControllerTest extends FunctionalTestCase
         self::assertResponseStatusCodeSame(302);
     }
 //
-//    public function testReturnErrorIfAdminUpdateUserWithIncorrectValues() : void
-//    {
-//
-//    }
-//
-//    public function testReturnErrorIfUserUpdateUser() : void
-//    {
-//
-//    }
+    public function testReturnErrorIfAdminUpdateUserWithIncorrectValues() : void
+    {
+        $this->login();
+        $user = $this->getEntityManager()->getRepository(User::class)->findOneBy(['username' => 'userTest2']);
+        $this->get('/admin/guest/update/' . $user->getId());
+
+        $this->submitUserForm("userTest2", 'descriptionTest', 'ezoihlkvs', 'coucou', 'Modifier');
+
+        self::assertResponseStatusCodeSame(200);
+    }
+
+    public function testReturnErrorIfUserUpdateUser() : void
+    {
+        $this->login("userTest1@gmail.com");
+        $user = $this->getEntityManager()->getRepository(User::class)->findOneBy(['username' => 'userTest2']);
+        $this->get('/admin/guest/update/' . $user->getId());
+
+        self::assertResponseStatusCodeSame(403);
+    }
 //
 //    //----------------- DELETE USER -----------------
 //
-//    public function testReturnOkIfAdminDeleteUser(): void
-//    {
-//
-//    }
-//
-//    public function testReturnErrorIfAdminDeleteUserWithIncorrectValues() : void
-//    {
-//
-//    }
-//
-//    public function testReturnErrorIfUserDeleteUser() : void
-//    {
-//
-//    }
+    public function testReturnOkIfAdminDeleteUser(): void
+    {
+        $this->login();
+        $user = $this->getEntityManager()->getRepository(User::class)->findOneBy(['username' => 'userTest3']);
+        $this->get('/admin/guest/delete/' . $user->getId());
+        self::assertResponseStatusCodeSame(302);
+    }
+
+    public function testReturnErrorIfUserDeleteUser() : void
+    {
+        $this->login("userTest1@gmail.com");
+        $user = $this->getEntityManager()->getRepository(User::class)->findOneBy(['username' => 'userTest4']);
+        $this->get('/admin/guest/delete/' . $user->getId());
+        self::assertResponseStatusCodeSame(403);
+    }
     private function submitUserForm(
         string $username = 'userTest',
         string $description = "descriptionTest",

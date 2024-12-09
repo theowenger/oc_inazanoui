@@ -31,7 +31,7 @@ class HomeController extends AbstractController
     #[Route('/guests', name: 'guests')]
     public function guests(): Response
     {
-        $guests = $this->userRepository->findAll();
+        $guests = $this->userRepository->findBy(['isEnabled' => true]);
 
         $filteredGuests = array_filter($guests, static function ($user) {
             return in_array('ROLE_USER', $user->getRoles());
@@ -46,6 +46,9 @@ class HomeController extends AbstractController
     public function guest(int $id)
     {
         $guest = $this->entityManager->getRepository(User::class)->find($id);
+        if($guest && !$guest->isEnabled()) {
+            return $this->redirectToRoute('guests');
+        }
         return $this->render('front/guest.html.twig', [
             'guest' => $guest
         ]);
@@ -54,7 +57,7 @@ class HomeController extends AbstractController
     #[Route('/portfolio/{id}', name: 'portfolio')]
     public function portfolio(?int $id = null)
     {
-        $albums = $this->entityManager->getRepository(Album::class)->findAll();
+        $albums = $this->entityManager->getRepository(Album::class)->findAlbumsWithEnabledUsers();
         $album = $id ? $this->entityManager->getRepository(Album::class)->find($id) : null;
         $user = $this->entityManager->getRepository(User::class)->findOneByRole("ROLE_ADMIN");
 
@@ -72,6 +75,12 @@ class HomeController extends AbstractController
     public function media(int $id)
     {
         $media = $this->entityManager->getRepository(Media::class)->find($id);
+        if($media) {
+            $user = $media->getUser();
+            if(!$user->isEnabled()) {
+                return $this->redirectToRoute('home');
+            }
+        }
         return $this->render('front/media.html.twig', [
             'media' => $media
         ]);

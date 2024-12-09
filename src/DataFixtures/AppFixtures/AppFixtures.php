@@ -10,6 +10,7 @@ use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Filesystem\Filesystem;
 
+/** @codeCoverageIgnore */
 class AppFixtures extends Fixture implements FixtureGroupInterface
 {
 
