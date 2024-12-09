@@ -39,8 +39,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $username = null;
     #[ORM\Column(type: 'boolean')]
     private bool $isEnabled = true;
+    /**
+     * @var Collection<int, Media> $medias
+     */
     #[ORM\OneToMany(targetEntity: Media::class, mappedBy: "user", cascade: ['remove'], orphanRemoval: true)]
     private Collection $medias;
+    /**
+     * @var Collection<int, Album> $albums
+     */
     #[ORM\OneToMany(targetEntity: Album::class, mappedBy: "user", cascade: ['remove'], orphanRemoval: true)]
     private Collection $albums;
 
@@ -157,7 +163,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection
+     * @return Collection<int, Media> $medias
      */
     public function getMedias(): Collection
     {
@@ -165,7 +171,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @param Collection $medias
+     * @param Collection<int, Media> $medias
      * @return User
      */
     public function setMedias(Collection $medias): self
@@ -194,6 +200,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    /**
+     * @return Collection<int, Album> $albums
+     */
     public function getAlbums(): Collection {
         return $this->albums;
     }

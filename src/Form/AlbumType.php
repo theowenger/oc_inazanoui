@@ -9,6 +9,10 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
 
+/**
+ * @template TData of Album
+ * @extends AbstractType<TData>
+ */
 class AlbumType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void

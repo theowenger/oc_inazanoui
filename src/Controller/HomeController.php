@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Album;
 use App\Entity\Media;
 use App\Entity\User;
+use App\Repository\AlbumRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,7 +24,7 @@ class HomeController extends AbstractController
         $this->userRepository = $userRepository;
     }
     #[Route('/', name: 'home')]
-    public function home()
+    public function home(): Response
     {
         return $this->render('front/home.html.twig');
     }
@@ -43,7 +44,7 @@ class HomeController extends AbstractController
     }
 
     #[Route('/guest/{id}', name: 'guest')]
-    public function guest(int $id)
+    public function guest(int $id): Response
     {
         $guest = $this->entityManager->getRepository(User::class)->find($id);
         if($guest && !$guest->isEnabled()) {
@@ -55,8 +56,9 @@ class HomeController extends AbstractController
     }
 
     #[Route('/portfolio/{id}', name: 'portfolio')]
-    public function portfolio(?int $id = null)
+    public function portfolio(?int $id = null): Response
     {
+        /** @var AlbumRepository $albums */
         $albums = $this->entityManager->getRepository(Album::class)->findAlbumsWithEnabledUsers();
         $album = $id ? $this->entityManager->getRepository(Album::class)->find($id) : null;
         $user = $this->entityManager->getRepository(User::class)->findOneByRole("ROLE_ADMIN");
@@ -72,7 +74,7 @@ class HomeController extends AbstractController
     }
 
     #[Route('/media/{id}', name: 'media')]
-    public function media(int $id)
+    public function media(int $id) : Response
     {
         $media = $this->entityManager->getRepository(Media::class)->find($id);
         if($media) {
@@ -87,7 +89,7 @@ class HomeController extends AbstractController
     }
 
     #[Route('/about', name: 'about')]
-    public function about()
+    public function about(): Response
     {
         return $this->render('front/about.html.twig');
     }

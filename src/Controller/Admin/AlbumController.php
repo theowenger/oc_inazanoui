@@ -57,7 +57,7 @@ class AlbumController extends AbstractController
     }
 
     #[Route('/admin/album/update/{id}', name: 'admin_album_update')]
-    public function update(Request $request, int $id)
+    public function update(Request $request, int $id) : RedirectResponse|Response
     {
         $user = $this->getUser();
         $album = $this->albumRepository->find($id);

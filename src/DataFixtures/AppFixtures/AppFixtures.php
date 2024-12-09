@@ -21,6 +21,7 @@ class AppFixtures extends Fixture implements FixtureGroupInterface
 
     public function load(ObjectManager $manager): void
     {
+        /** @var User[] $users */
         $users = [];
 
         $this->loadUser($manager, $users);
@@ -31,6 +32,7 @@ class AppFixtures extends Fixture implements FixtureGroupInterface
 
     private function loadUser(ObjectManager $manager, array &$users): void
     {
+
         $plainPassword = 'secret';
 
         for ($i = 0; $i <= 5; $i++) {
@@ -64,6 +66,7 @@ class AppFixtures extends Fixture implements FixtureGroupInterface
 
     private function loadMediaAndAlbums(ObjectManager $manager, array $users): void
     {
+        /** @var User[] $users */
         $filesystem = new Filesystem();
 
         $sourcePath = dirname(__DIR__, 3) . "/public/images/ina.png";

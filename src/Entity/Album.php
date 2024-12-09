@@ -18,6 +18,9 @@ class Album
     #[ORM\Column]
     private string $name;
 
+    /**
+     * @var Collection<int, Media> $medias
+     */
     #[ORM\OneToMany(targetEntity: Media::class, mappedBy: 'album',cascade: ['persist', 'remove'],orphanRemoval: true)]
     private Collection $medias;
 

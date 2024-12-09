@@ -11,9 +11,7 @@ use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
- * @exl'objectif errant des horizons sans limites, parcourt le globe uniquement au gré des murmures de la nature, capturant le souffle du monde dans des cadres silencieux.
-
-découvrirtends FunctionalTestCase<object>
+ * @extends FunctionalTestCase<object>
  */
 final class UserControllerTest extends FunctionalTestCase
 {

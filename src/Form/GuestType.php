@@ -12,6 +12,10 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @template TData of User
+ * @extends AbstractType<TData>
+ */
 class GuestType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void

@@ -55,3 +55,5 @@ jobs:
           php bin/console doctrine:fixtures:load -n --group=test
       - name: Tests
         run: php bin/phpunit
+      - name: Analysis
+        run: php vendor/bin/phpstan
