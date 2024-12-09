@@ -46,7 +46,7 @@ jobs:
       - name: Build
         env:
           APP_ENV: test
-        run:
+        run: |
           composer install
           php bin/console doctrine:database:drop
           php bin/console doctrine:database:create
