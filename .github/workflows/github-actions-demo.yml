@@ -44,6 +44,8 @@ jobs:
             ${{ runner.os }}-php-
 
       - name: Build
+        env:
+          APP_ENV: test
         run:
           composer install
           php bin/console doctrine:database:drop --env=test
