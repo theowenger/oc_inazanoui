@@ -43,6 +43,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-php-
 
+      - name: Create missing sequences
+        run: |
+          psql -h localhost -U postgres -d ina_zaoui -c "CREATE SEQUENCE IF NOT EXISTS user_id_seq START 1 INCREMENT 1 OWNED BY \"user\".id;"
+          psql -h localhost -U postgres -d ina_zaoui -c "SELECT setval('user_id_seq', (SELECT MAX(id) FROM \"user\"));"
+
       - name: Build
         env:
           APP_ENV: test
