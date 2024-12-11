@@ -34,6 +34,8 @@
 - Installer le --test-coverage **CHECK**
 - Changer les status code 200 en cas d'erreur (par ex : add form) OU ALORS ...
 - plutot crawler la page pour recuperer les erreurs
+- Traduire le texte en fr
+- Sortir les utilisateur par ordre alphabetique
 
 - Intégrez un mécanisme permettant à Ina de révoquer l'accès des invités sélectionnés,  **CHECK**
 - ce qui entraînera le non-affichage de leurs photos sur la plateforme, **CHECK**

@@ -34,7 +34,7 @@ When you add code, beware of this criticals points:
 - for every feature, is essential to write test before merge into develop
 - if existing test need to be rework, make it before create new test
 - write unit/functionnal test
-- launch test
+- launch test (see README.md)
 
 ## finish feature:
 

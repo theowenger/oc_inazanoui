@@ -23,9 +23,9 @@ class AlbumClassTest extends TestCase
     public function testAlbumCreation(): void
     {
         $this->assertInstanceOf(Album::class, $this->album);
-        $this->assertNull($this->album->getId()); // L'ID doit être null au début
-        $this->assertEquals('Test Album', $this->album->getName()); // Le nom est vide au début
-        $this->assertInstanceOf(ArrayCollection::class, $this->album->getMedias()); // La collection des médias doit être un ArrayCollection vide
+        $this->assertNull($this->album->getId());
+        $this->assertEquals('Test Album', $this->album->getName());
+        $this->assertInstanceOf(ArrayCollection::class, $this->album->getMedias());
     }
 
     // Test des getters et setters
@@ -37,7 +37,7 @@ class AlbumClassTest extends TestCase
 
     public function testSetGetUser(): void
     {
-        $user = $this->createMock(User::class); // Simule un utilisateur
+        $user = $this->createMock(User::class);
         $this->album->setUser($user);
         $this->assertSame($user, $this->album->getUser());
     }
@@ -45,21 +45,21 @@ class AlbumClassTest extends TestCase
     // Test de l'ajout de média
     public function testAddMedia(): void
     {
-        $media = $this->createMock(Media::class); // Simule un média
+        $media = $this->createMock(Media::class);
         $this->album->addMedia($media);
 
         $medias = $this->album->getMedias();
-        $this->assertCount(1, $medias); // Un seul média doit être ajouté
+        $this->assertCount(1, $medias);
     }
 
     // Test de la suppression de média
     public function testRemoveMedia(): void
     {
-        $media = $this->createMock(Media::class); // Simule un média
+        $media = $this->createMock(Media::class);
         $this->album->addMedia($media);
         $this->assertCount(1, $this->album->getMedias());
 
         $this->album->removeMedia($media);
-        $this->assertCount(0, $this->album->getMedias()); // Le média doit être supprimé
+        $this->assertCount(0, $this->album->getMedias());
     }
 }
