@@ -8,6 +8,7 @@
 /var/
 /vendor/
 /result-test/*
+/uploads/*
 ###< symfony/framework-bundle ###
 
 ###> phpunit/phpunit ###
