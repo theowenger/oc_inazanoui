@@ -31,9 +31,9 @@
 - php bin/console doctrine:fixtures:load --group=test --env=test
 
 ## Create Alias to Help launching tests 
-- alias php bin/console doctrine:fixtures:load --group=test --env=test -n && XDEBUG_MODE=coverage bin/phpunit --coverage-html ./result-test"
+- alias run-tests="php bin/console doctrine:fixtures:load --group=test --env=test -n && XDEBUG_MODE=coverage bin/phpunit --coverage-html ./result-test"
 
 
 ## Launch tests:
 - go to the root folder
-- phpunit_with_fixtures
+- run-tests
