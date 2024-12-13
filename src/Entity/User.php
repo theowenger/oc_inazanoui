@@ -184,7 +184,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->medias->contains($media)) {
             $this->medias[] = $media;
-            $media->setUser($this); // Lier l'utilisateur au média
+            $media->setUser($this);
         }
 
         return $this;
@@ -192,7 +192,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function removeMedia(Media $media): self
     {
-        // Si la collection a été modifiée, on délie l'utilisateur du média
         if ($this->medias->removeElement($media) && $media->getUser() === $this) {
             $media->setUser(null);
         }
