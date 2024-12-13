@@ -11,6 +11,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\OptimisticLockException;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class UserClassTest extends TestCase
@@ -62,6 +63,7 @@ class UserClassTest extends TestCase
 
     public function testSetMedia(): void
     {
+        /** @var Media&MockObject $mediaMock */
         $media = $this->createMock(Media::class);
         $collection = new ArrayCollection([$media]);
         $this->user->setMedias($collection);
