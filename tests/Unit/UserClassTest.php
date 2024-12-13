@@ -65,6 +65,8 @@ class UserClassTest extends TestCase
     {
         /** @var Media&MockObject $media */
         $media = $this->createMock(Media::class);
+
+        /** @var ArrayCollection<int, Media> $collection */
         $collection = new ArrayCollection([$media]);
         $this->user->setMedias($collection);
 
