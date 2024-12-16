@@ -12,11 +12,15 @@ use PHPUnit\Framework\TestCase;
 class AlbumClassTest extends TestCase
 {
     private Album $album;
+    private User $user;
 
     protected function setUp(): void
     {
         $this->album = new Album();
         $this->album->setName("Test Album");
+        $this->user = new User();
+        $this->album->setUser($this->user);
+        $this->user->addAlbum($this->album);
     }
 
     // Test de la création de l'album
@@ -26,6 +30,13 @@ class AlbumClassTest extends TestCase
         $this->assertNull($this->album->getId());
         $this->assertEquals('Test Album', $this->album->getName());
         $this->assertInstanceOf(ArrayCollection::class, $this->album->getMedias());
+    }
+
+    public function testRemoveAlbum(): void
+    {
+        $this->assertCount(1, $this->user->getAlbums());
+        $this->user->removeAlbum($this->album);
+        $this->assertCount(0, $this->user->getAlbums());
     }
 
     // Test des getters et setters

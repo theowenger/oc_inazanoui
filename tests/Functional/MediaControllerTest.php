@@ -114,7 +114,9 @@ final class MediaControllerTest extends FunctionalTestCase
 
         $medias = self::getContainer()->get(MediaRepository::class)->findAll();
         $media = $medias[array_rand($medias)];
+
         $this->get("/admin/media/delete/{$media->getId()}");
+
 
         self::assertResponseStatusCodeSame(302);
     }
@@ -165,4 +167,5 @@ final class MediaControllerTest extends FunctionalTestCase
             'media[file]' => $uploadedFile,
         ]);
     }
+
 }

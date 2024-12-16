@@ -77,9 +77,11 @@ class MediaController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $selectedAlbum = $media->getAlbum();
-            if (!$isAdmin && $selectedAlbum->getUser() !== $user) {
-                throw $this->createAccessDeniedException('You cannot add media to an album that does not belong to you.');
-            }
+
+            //Not valid because symfony generate already an invalidArgumentException
+//            if (!$isAdmin && $selectedAlbum->getUser() !== $user) {
+//                throw $this->createAccessDeniedException('You cannot add media to an album that does not belong to you.');
+//            }
 
             $media->setPath('uploads/' . md5(uniqid('', true)) . '.' . $media->getFile()->guessExtension());
             $media->getFile()->move('uploads/', $media->getPath());

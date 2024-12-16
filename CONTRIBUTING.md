@@ -24,6 +24,7 @@
 
 When you add code, beware of this criticals points:
 
+- install git flow (sudo apt install git-flow for linux)
 - create new branch "feature/name_of_your_branch"
 - If your code depend on Entity, generate new migration with doctrine
 - If your code depend on Controller, make sure you are on the good controller (ex: mediaController for media's code)

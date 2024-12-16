@@ -128,4 +128,28 @@ final class UserControllerTest extends FunctionalTestCase
             'guest[password]' => $password,
         ]);
     }
+
+    //
+    //----------------- BLOCK USER -----------------
+    //
+
+    public function testReturnOkIdAdminBlockUser(): void
+    {
+        $this->login();
+        $userToBan = $this->getEntityManager()->getRepository(User::class)->findOneBy(['username' => 'userTest2']);
+
+        $this->get('/admin/guest/block/' . $userToBan->getId());
+
+        self::assertResponseStatusCodeSame(302);
+    }
+
+    public function testReturnOkIdAdminUnblockUser(): void
+    {
+        $this->login();
+        $userToBan = $this->getEntityManager()->getRepository(User::class)->findOneBy(['username' => 'userTest2']);
+
+        $this->get('/admin/guest/unblock/' . $userToBan->getId());
+
+        self::assertResponseStatusCodeSame(302);
+    }
 }
